@@ -14,14 +14,15 @@ Wechaty.instance() // Global Instance
 .on('login',            user => console.log(`User ${user} logined`))
 .on('message',       message => {
 	console.log(`Message: ${message}`)
-	if(message.type() === mType.Attachment){
-		onMessage(message)
+	const type = message.type()
+	if(type === mType.Attachment || type === mType.Image || type === mType.audio || type === mType.Video){
+		onMessage(message, type)
 	}
 })
 .start()
 
-async function onMessage(message){
-	console.log('it is an attachment')
+async function onMessage(message, type){
+	console.log(`it is an ${type}`)
 	const att = await message.toFileBox()
 	const name = att.name
 	await att.toFile('attachments\\'+name, att)
